@@ -14,9 +14,6 @@
 
 body {
     font-family: 'Cairo', sans-serif;
-    background: linear-gradient(135deg,#1a0f35,#2c1b55);
-    color: #fff;
-    min-height: 100vh;
 }
 
 /* ===== Header ===== */
@@ -77,11 +74,14 @@ header h1 {
 .search-section {
     text-align: center;
     padding: 60px 20px 30px;
+    transition: all 0.4s ease;
 }
 
 .search-section h2 {
     font-size: 28px;
     margin-bottom: 20px;
+    color: var(--text);
+    font-weight: 700;
 }
 
 .search-container {
@@ -94,46 +94,49 @@ header h1 {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .search-container input {
     width: 100%;
     padding: 14px 45px 14px 15px;
-    border-radius: 10px;
-    border: none;
+    border-radius: 14px;
     outline: none;
     font-size: 16px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 193, 7, 0.3);
+    background: var(--bg2);
+    color: var(--text);
+    border: 2px solid var(--border2);
     transition: all 0.3s ease;
+    font-family: 'Cairo', sans-serif;
 }
 
 .search-container input:focus {
-    border-color: rgba(255, 193, 7, 0.8);
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
-    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--emerald);
+    box-shadow: 0 0 15px var(--emerald-glow);
+    background: var(--card);
 }
 
 .dropdown-toggle {
     position: absolute;
-    right: 10px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: rgba(255, 193, 7, 0.7);
+    color: var(--text3);
     cursor: pointer;
-    padding: 8px;
+    padding: 6px;
     border-radius: 50%;
     transition: all 0.3s ease;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dropdown-toggle:hover {
-    color: #facc15;
-    background: rgba(255, 193, 7, 0.1);
+    color: var(--emerald);
+    background: var(--emerald-glow2);
 }
 
 .dropdown-toggle.active {
@@ -142,46 +145,51 @@ header h1 {
 
 .search-container button {
     margin-top: 15px;
-    padding: 10px 25px;
+    padding: 12px 30px;
     border: none;
-    border-radius: 8px;
-    background: #facc15;
-    color: #000;
+    border-radius: 10px;
+    background: var(--emerald);
+    color: #fff;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
 }
 
 .search-container button:hover {
-    background: #ffd84d;
+    background: var(--emerald-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-emerald);
 }
 
 .suggestions-style {
     position: absolute;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    color: #000;
-    border-radius: 8px;
-    margin-top: 5px;
-    max-height: 300px;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-top: 8px;
+    max-height: 250px;
     overflow-y: auto;
     display: none;
     z-index: 999;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-lg);
     backdrop-filter: blur(10px);
 }
 
 .suggestion-item {
-    padding: 12px 15px;
+    padding: 12px 18px;
     cursor: pointer;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--border);
     transition: all 0.2s ease;
     font-size: 15px;
+    text-align: right;
 }
 
 .suggestion-item:hover {
-    background: rgba(250, 204, 21, 0.1);
-    color: #000;
+    background: var(--emerald-glow2);
+    color: var(--emerald);
 }
 
 .suggestion-item:last-child {
@@ -194,12 +202,14 @@ header h1 {
     max-width: 950px;
     margin: 50px auto;
     padding: 50px;
-    background: #ffffff;
-    color: #000;
+    background: var(--card);
+    color: var(--text);
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: background 0.4s, color 0.4s, box-shadow 0.4s;
 
-    font-family: 'MushafMakki', serif; /* خط المصحف */
+    font-family: 'Amiri Quran', 'Amiri', 'MushafMakki', serif; /* خط مصحف بديل من جوجل */
     font-size: 30px; /* حجم مناسب لخط المصحف */
     line-height: 3.2; /* مسافة مريحة بين الآيات */
     text-align: center;
@@ -220,15 +230,16 @@ header h1 {
 .surah-header h2 {
     font-size: 34px;
     margin-bottom: 10px;
+    color: var(--text);
 }
 
 .surah-header p {
     font-size: 16px;
-    opacity: 0.7;
+    color: var(--text3);
 }
 
 .surah-body {
-    font-family: 'MushafMakki', serif;
+    font-family: 'Amiri Quran', 'Amiri', 'MushafMakki', serif;
     font-size: 30px;
     line-height: 3.2;
 }
@@ -240,15 +251,18 @@ header h1 {
 
 .ayah-number {
     display: inline-block;
-    margin-right: 8px;
-    font-size: 18px;
-    background: #facc15;
-    color: black;
+    margin: 0 6px;
+    font-size: 15px;
+    background: var(--emerald-glow2);
+    color: var(--emerald);
+    border: 1px solid var(--border2);
     border-radius: 50%;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     text-align: center;
     line-height: 28px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: bold;
 }
 /* تأثير إخفاء البحث عند النزول */
 .search-section {
@@ -260,270 +274,394 @@ header h1 {
     opacity: 0;
     pointer-events: none;
 }
-/* ===== مشغل الصوت ===== */
+/* ===== مشغل الصوت الثابت الجديد (فوق شريط التنقل) ===== */
 
-.audio-player{
-    position:sticky;
-    top:0;
-    z-index:1000;
-    background:#120a28;
-    display:flex;
-    align-items:center;
-    gap:15px;   
-    padding:10px 20px;
-    border-bottom:1px solid rgba(255,255,255,0.1);
+.audio-player {
+    position: fixed;
+    bottom: calc(var(--nav-h) + 12px); /* فوق شريط التنقل بـ 12px */
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 30px);
+    max-width: 920px;
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    height: 75px; /* الارتفاع الافتراضي المصغر */
+    display: flex;
+    flex-direction: column;
 }
 
-.reciter-selector-btn {
-    background: none;
-    border: 2px solid rgba(255, 193, 7, 0.3);
-    border-radius: 25px;
-    padding: 8px 15px;
+/* حالة التوسيع */
+.audio-player.expanded {
+    height: 250px; /* الارتفاع الموسع */
+}
+
+/* الهيدر (المشغل المصغر) */
+.player-header {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    flex-shrink: 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.audio-player.expanded .player-header {
+    border-color: var(--border);
+}
+
+/* زر التوسيع */
+.expand-btn {
+    color: var(--text3);
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+}
+
+.expand-btn:hover {
+    color: var(--emerald);
+    background: var(--emerald-glow2);
+    border-color: var(--emerald);
+}
+
+.expand-btn i {
+    transition: transform 0.4s ease;
+}
+
+/* معلومات السورة والقارئ في المشغل المصغر */
+.mini-player-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    margin-right: 15px;
+}
+
+.mini-player-info img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--emerald);
+    box-shadow: var(--shadow-emerald);
+}
+
+.mini-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mini-text #currentSurahName {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.mini-text #miniReciterName {
+    font-size: 12px;
+    color: var(--text3);
+}
+
+/* أزرار التحكم بالصوت في الهيدر */
+.player-controls {
     display: flex;
     align-items: center;
     gap: 10px;
-    position: relative;
-    min-width: 120px;
+}
+
+.player-controls button {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.player-controls button:hover {
+    background: var(--emerald-glow);
+    color: var(--emerald);
+    border-color: var(--emerald);
+    transform: scale(1.08);
+}
+
+.player-controls button:active {
+    transform: scale(0.95);
+}
+
+/* زر التشغيل الرئيسي */
+.player-controls button:nth-child(2) {
+    background: var(--emerald);
+    color: #fff;
+    border-color: var(--emerald);
+    font-size: 16px;
+    width: 46px;
+    height: 46px;
+}
+
+.player-controls button:nth-child(2):hover {
+    background: var(--emerald-dark);
+    border-color: var(--emerald-dark);
+    box-shadow: var(--shadow-emerald);
+}
+
+/* القسم الموسع */
+.player-body {
+    height: 175px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px 30px;
+    background: var(--bg2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.audio-player.expanded .player-body {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* معلومات القارئ الموسعة */
+.expanded-reciter-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.expanded-reciter-info img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--emerald);
+    box-shadow: var(--shadow-emerald);
+}
+
+.reciter-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.reciter-details #reciterName {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.reciter-details .reciter-label-title {
+    font-size: 12px;
+    color: var(--text3);
+    font-weight: 500;
+}
+
+/* زر اختيار القارئ الموسع */
+.reciter-selector-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 2px solid var(--border2);
+    background: var(--card);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
 }
 
 .reciter-selector-btn:hover {
-    border-color: rgba(255, 193, 7, 0.6);
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.2);
-    background: rgba(255, 193, 7, 0.05);
+    border-color: var(--emerald);
+    background: var(--emerald-glow);
+    color: var(--emerald);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-emerald);
 }
 
-.reciter-selector-wrapper {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
+.reciter-selector-btn i {
+    font-size: 16px;
 }
 
-.reciter-selector-btn img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
+/* ===== قائمة القراء كـ درج دوار رأسي (Picker Wheel) ===== */
 
-.selector-arrow {
-    position: absolute;
-    bottom: -3px;
-    right: -3px;
-    width: 18px;
-    height: 18px;
-    background: rgba(255, 193, 7, 0.9);
-    color: #000;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-    transition: transform 0.3s ease;
-    padding: 1px;
-    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
-    line-height: 1;
-}
-
-.reciter-label {
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.scholars-dropdown.active .selector-arrow {
-    transform: rotate(180deg);
-}
-
-.player-info{
-    display:flex;
-    flex-direction:column;
-    font-size:14px;
-    flex: 1;
-    justify-content: center;
-}
-
-.player-controls{
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.player-controls button{
-    background:#facc15;
-    border:none;
-    padding:8px 12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-    color: #000;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-}
-
-.player-controls button:hover{
-    background: #ffd84d;
-    transform: scale(1.05);
-}
-
-.player-controls button:active{
-    transform: scale(0.95);
-}
-/* ===== SCHOLARS BAR - Dropdown Style ===== */
 .scholars-dropdown {
-    position: sticky;
-    top: 80px;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
-    z-index: 1100;
-    background: rgba(18, 10, 40, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 193, 7, 0.2);
-    padding: 15px 20px;
-    animation: slideDown 0.3s ease;
+    bottom: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.scholars-dropdown.active {
+    display: flex !important;
+    opacity: 1;
 }
 
-.scholars-bar {
+.scholars-bar-wrapper {
+    width: 100%;
+    max-width: 600px;
+    background: var(--card);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    padding: 30px 16px 20px;
+    box-shadow: 0 -15px 40px rgba(0,0,0,0.4);
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    max-height: 500px;
-    overflow-y: auto;
-    padding: 0;
+    align-items: center;
+    gap: 15px;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border-top: 2px solid var(--border2);
+}
+
+.scholars-dropdown.active .scholars-bar-wrapper {
+    transform: translateY(0);
+}
+
+/* مقبض سحب للدرج */
+.scholars-bar-wrapper::before {
+    content: '';
+    width: 50px;
+    height: 5px;
+    background: var(--border2);
+    border-radius: 10px;
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.scholars-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+/* القائمة الدوارة */
+.scholars-bar {
+    width: 100%;
+    height: 320px; /* يعرض حوالي 3-4 عناصر */
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    padding-top: 120px; /* تباعد لتوسيط أول عنصر */
+    padding-bottom: 120px; /* تباعد لتوسيط آخر عنصر */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     scroll-behavior: smooth;
+    scrollbar-width: none; /* إخفاء شريط التمرير الافتراضي */
+    position: relative;
 }
 
 .scholars-bar::-webkit-scrollbar {
-    width: 6px;
+    display: none; /* إخفاء شريط التمرير على كروم وسفاري */
 }
 
-.scholars-bar::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+/* مؤشر الاختيار خلف العنصر النشط */
+.picker-highlight {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    right: 16px;
+    height: 75px;
+    transform: translateY(-50%);
+    border-top: 1px dashed var(--border2);
+    border-bottom: 1px dashed var(--border2);
+    pointer-events: none;
+    z-index: 1;
+    background: var(--emerald-glow2);
+    border-radius: 16px;
 }
 
-.scholars-bar::-webkit-scrollbar-thumb {
-    background: rgba(255, 193, 7, 0.4);
-    border-radius: 10px;
-    transition: background 0.3s ease;
-}
-
-.scholars-bar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 193, 7, 0.7);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* تصميم كارت القارئ */
 .scholar-profile {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse; /* الصورة على اليسار والاسم على اليمين */
     align-items: center;
-    gap: 1rem;
-    text-decoration: none;
-    color: inherit;
-    padding: 0.8rem 1rem;
-    background: rgba(63, 81, 181, 0.1);
-    border: 1px solid rgba(63, 81, 181, 0.2);
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    justify-content: space-between;
+    padding: 12px 25px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.4;
+    transform: scale(0.85);
     cursor: pointer;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    flex-shrink: 0;
-    width: 98%;
+    text-decoration: none;
+    width: 100%;
+    min-height: 70px;
+    z-index: 2;
 }
 
-.scholar-profile:hover {
-    border-color: rgba(255, 193, 7, 0.5);
-    transform: translateX(-5px);
-    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.15);
-    background: rgba(63, 81, 181, 0.2);
+/* العنصر النشط المختار في المنتصف */
+.scholar-profile.active-picker-item {
+    opacity: 1 !important;
+    transform: scale(1.05) !important;
+    border-color: var(--emerald) !important;
+    background: var(--card) !important;
+    box-shadow: var(--shadow-emerald) !important;
 }
 
 .scholar-image {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid rgba(255, 193, 7, 0.3);
-    transition: all 0.3s ease;
-    flex-shrink: 0;
+    border: 2px solid var(--border);
+    transition: border-color 0.3s;
 }
 
-.scholar-profile:hover .scholar-image {
-    border-color: rgba(255, 193, 7, 0.6);
-    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
-}
-
-.scholar-name {
-    flex: 1;
-    font-size: 15px;
-    font-weight: 500;
+.scholar-profile.active-picker-item .scholar-image {
+    border-color: var(--emerald);
 }
 
 .scholar-name {
-    font-size: 1rem;
-    font-weight: 600;
-    text-align: center;
-    color: #ffffff;
-    transition: color 0.3s ease;
-    line-height: 1.4;
-}
-
-.scholar-profile:hover .scholar-name {
-    color: #FFD700;
-}
-
-/* ===== FEATURED SCHOLAR - MINSHAWY ===== */
-.scholar-profile.featured-scholar {
-    min-width: 180px;
-    width: 180px;
-    padding: 1.8rem;
-    transform: scale(1.15);
-}
-
-.scholar-profile.featured-scholar .scholar-image {
-    width: 120px;
-    height: 120px;
-    border-width: 4px;
-    box-shadow: 0 12px 48px rgba(255, 193, 7, 0.4);
-}
-
-.scholar-profile.featured-scholar .scholar-name {
-    font-size: 1.1rem;
+    font-size: 16px;
     font-weight: 700;
+    color: var(--text) !important;
+    text-align: right;
+    transition: color 0.3s;
 }
 
-.scholar-profile.featured-scholar:hover {
-    transform: scale(1.25) translateY(-12px);
-    box-shadow: 0 20px 60px rgba(255, 193, 7, 0.3);
+.scholar-profile.active-picker-item .scholar-name {
+    color: var(--emerald) !important;
 }
 /* ===== HAMBURGER MENU ===== */
 .menu-toggle {
@@ -589,10 +727,13 @@ header h1 {
     transition:.3s;
 }
 
-.active-ayah{
-    background:#ffe08a;
-    border-radius:12px;
-    padding:6px 10px;
+.active-ayah {
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 12px;
+    padding: 2px 8px;
+    color: var(--emerald);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+    transition: all 0.3s;
 }
 
 

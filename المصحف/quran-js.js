@@ -16,62 +16,195 @@ const surahs = [
 "المسد","الإخلاص","الفلق","الناس"
 ];
 
-let currentReciterServer = null;
+// ===============================
+// أسماء سور محمد عبادة (كما هي في الملفات)
+// ===============================
+const abadaSurahNames = [
+"الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة",
+"يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
+"الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
+"لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
+"فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
+"الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
+"الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
+"نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
+"التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
+"الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
+"القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
+"المسد","الإخلاص","الفلق","الناس"
+];
+
+let currentReciterServer = "https://server10.mp3quran.net/minsh/"; // خادم افتراضي للشيخ المنشاوي
+let currentReciterType = "mp3quran"; // "mp3quran" أو "abada"
 let currentSurahNumber = null;
 
 const audio = document.getElementById("quranAudio");
 const playIcon = document.getElementById("playIcon");
 
 // ===============================
-// toggle dropdown menu
+// توسيع / تصغير مشغل الصوت الثابت
+// ===============================
+const audioPlayer = document.getElementById("audioPlayer");
+const expandPlayerBtn = document.getElementById("expandPlayerBtn");
+const playerHeader = document.querySelector(".player-header");
+
+if (expandPlayerBtn && audioPlayer) {
+    expandPlayerBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        togglePlayerExpand();
+    });
+}
+
+if (playerHeader && audioPlayer) {
+    playerHeader.addEventListener("click", function (e) {
+        // توسيع المشغل عند النقر على الهيدر بشرط عدم النقر على زر التحكم أو زر السهم
+        if (!e.target.closest("button") && !e.target.closest(".player-controls")) {
+            togglePlayerExpand();
+        }
+    });
+}
+
+function togglePlayerExpand() {
+    audioPlayer.classList.toggle("expanded");
+    const icon = expandPlayerBtn.querySelector("i");
+    if (audioPlayer.classList.contains("expanded")) {
+        icon.className = "fas fa-chevron-down";
+    } else {
+        icon.className = "fas fa-chevron-up";
+    }
+}
+
+// ===============================
+// درج القراء الدوار (Picker Wheel)
 // ===============================
 const reciterSelectorBtn = document.getElementById("reciterSelectorBtn");
 const scholarsDropdown = document.getElementById("scholarsDropdown");
+const recitersBar = document.getElementById("recitersBar");
 
+// فتح الدرج وتوسيط القارئ المختار حالياً
 reciterSelectorBtn.addEventListener("click", function (e) {
     e.stopPropagation();
-    if (scholarsDropdown.style.display === "none") {
-        scholarsDropdown.style.display = "block";
-        scholarsDropdown.classList.add("active");
-    } else {
-        scholarsDropdown.style.display = "none";
+    scholarsDropdown.classList.add("active");
+
+    setTimeout(() => {
+        const activeReciterName = document.getElementById("reciterName").innerText;
+        const items = recitersBar.querySelectorAll(".scholar-profile");
+        let activeItem = null;
+
+        items.forEach(item => {
+            if (item.querySelector(".scholar-name").innerText === activeReciterName) {
+                activeItem = item;
+            }
+        });
+
+        if (activeItem) {
+            activeItem.scrollIntoView({ block: 'center', inline: 'nearest' });
+            updateActivePickerItem();
+        } else {
+            updateActivePickerItem();
+        }
+    }, 150);
+});
+
+// إغلاق الدرج عند النقر على الخلفية المظلمة
+scholarsDropdown.addEventListener("click", function (e) {
+    if (e.target === scholarsDropdown) {
         scholarsDropdown.classList.remove("active");
     }
 });
 
-// Close dropdown when clicking outside
-document.addEventListener("click", function (e) {
-    if (!e.target.closest(".audio-player") && !e.target.closest(".scholars-dropdown")) {
-        scholarsDropdown.style.display = "none";
-        scholarsDropdown.classList.remove("active");
-    }
-});
+// دالة لتحديث العنصر النشط في المنتصف أثناء التمرير
+function updateActivePickerItem() {
+    if (!recitersBar) return;
+
+    const containerCenter = recitersBar.getBoundingClientRect().top + recitersBar.clientHeight / 2;
+    let closestElement = null;
+    let minDistance = Infinity;
+
+    const items = recitersBar.querySelectorAll(".scholar-profile");
+    items.forEach(item => {
+        const itemCenter = item.getBoundingClientRect().top + item.clientHeight / 2;
+        const distance = Math.abs(itemCenter - containerCenter);
+
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestElement = item;
+        }
+    });
+
+    items.forEach(item => {
+        if (item === closestElement) {
+            item.classList.add("active-picker-item");
+        } else {
+            item.classList.remove("active-picker-item");
+        }
+    });
+}
+
+if (recitersBar) {
+    recitersBar.addEventListener("scroll", updateActivePickerItem);
+}
 
 // ===============================
-// اختيار القارئ
+// اختيار القارئ وتحديث البيانات
 // ===============================
 document.querySelectorAll(".scholar-profile").forEach(el => {
     el.addEventListener("click", function (e) {
         e.preventDefault();
+        e.stopPropagation();
 
-        currentReciterServer = this.dataset.server;
+        // التمرير للمنتصف أولاً إذا لم يكن نشطاً
+        if (!this.classList.contains("active-picker-item")) {
+            this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            recitersBar.querySelectorAll(".scholar-profile").forEach(item => {
+                item.classList.remove("active-picker-item");
+            });
+            this.classList.add("active-picker-item");
+        }
 
-        // Update the reciter label in the button
-        document.querySelector(".reciter-label").innerText =
-            this.querySelector(".scholar-name").innerText;
+        // إتمام الاختيار وإغلاق الدرج بعد تأخير بسيط للحركة
+        setTimeout(() => {
+            currentReciterServer = this.dataset.server;
+            currentReciterType = this.dataset.type || "mp3quran";
 
-        document.getElementById("reciterImage").src =
-            this.querySelector("img").src;
+            const reciterNameText = this.querySelector(".scholar-name").innerText;
+            const reciterImgSrc = this.querySelector("img").src;
 
-        // Close dropdown
-        scholarsDropdown.style.display = "none";
-        scholarsDropdown.classList.remove("active");
+            // تحديث التسميات
+            const reciterLabel = document.querySelector(".reciter-label");
+            if (reciterLabel) reciterLabel.innerText = "قارئ آخر: " + reciterNameText;
 
-        if (currentSurahNumber) playCurrentSurah();
+            const reciterNameEl = document.getElementById("reciterName");
+            if (reciterNameEl) {
+                reciterNameEl.innerText = reciterNameText;
+                reciterNameEl.style.display = "block";
+            }
+
+            const miniReciterNameEl = document.getElementById("miniReciterName");
+            if (miniReciterNameEl) miniReciterNameEl.innerText = reciterNameText;
+
+            // تحديث الصور
+            const reciterImageEl = document.getElementById("reciterImage");
+            if (reciterImageEl) reciterImageEl.src = reciterImgSrc;
+
+            const miniReciterImageEl = document.getElementById("miniReciterImage");
+            if (miniReciterImageEl) miniReciterImageEl.src = reciterImgSrc;
+
+            // إغلاق الدرج
+            scholarsDropdown.classList.remove("active");
+
+            if (currentSurahNumber) playCurrentSurah();
+        }, 250);
     });
 });
 
 function getAudioLink(server, number) {
+    if (currentReciterType === "abada") {
+        const surahName = abadaSurahNames[number - 1];
+        const num = String(number).padStart(3, '0');
+        const fileName = `تلاوة محمد عبادة سورة ${num}  ${surahName}  mp3.mp3`;
+        return server + encodeURIComponent(fileName);
+    }
     return server + String(number).padStart(3, '0') + ".mp3";
 }
 
@@ -114,7 +247,7 @@ function forwardAudio() {
 // ===============================
 async function searchSurah() {
 
-    const input = document.getElementById('searchInput').value.trim();
+    const input = document.getElementById('quranSearchInput').value.trim();
     const displayArea = document.getElementById('quranContent');
 
     let surahNumber = null;
@@ -201,7 +334,7 @@ let isDropdownOpen = false;
 function toggleSurahDropdown() {
     const box = document.getElementById("suggestionsBox");
     const toggleBtn = document.getElementById("dropdownToggle");
-    const input = document.getElementById("searchInput");
+    const input = document.getElementById("quranSearchInput");
 
     if (isDropdownOpen) {
         box.style.display = "none";
@@ -226,7 +359,7 @@ function showAllSurahs() {
         div.innerText = `${index + 1}. ${surahName}`;
 
         div.onclick = function () {
-            document.getElementById("searchInput").value = surahName;
+            document.getElementById("quranSearchInput").value = surahName;
             box.style.display = "none";
             document.getElementById("dropdownToggle").classList.remove("active");
             isDropdownOpen = false;
@@ -238,7 +371,7 @@ function showAllSurahs() {
 }
 
 function showSuggestions() {
-    const input = document.getElementById("searchInput").value.trim();
+    const input = document.getElementById("quranSearchInput").value.trim();
     const box = document.getElementById("suggestionsBox");
     const toggleBtn = document.getElementById("dropdownToggle");
 
@@ -269,7 +402,7 @@ function showSuggestions() {
         div.innerText = `${originalIndex + 1}. ${surahName}`;
 
         div.onclick = function () {
-            document.getElementById("searchInput").value = surahName;
+            document.getElementById("quranSearchInput").value = surahName;
             box.style.display = "none";
             toggleBtn.classList.remove("active");
             isDropdownOpen = false;
@@ -282,7 +415,7 @@ function showSuggestions() {
     box.style.display = "block";
 }
 
-document.getElementById("searchInput").addEventListener("input", showSuggestions);
+document.getElementById("quranSearchInput").addEventListener("input", showSuggestions);
 
 // إضافة event listeners للقائمة المنسدلة
 document.getElementById("dropdownToggle").addEventListener("click", function(e) {
@@ -290,7 +423,7 @@ document.getElementById("dropdownToggle").addEventListener("click", function(e) 
     toggleSurahDropdown();
 });
 
-document.getElementById("searchInput").addEventListener("click", function() {
+document.getElementById("quranSearchInput").addEventListener("click", function() {
     if (!isDropdownOpen) {
         toggleSurahDropdown();
     }
@@ -326,7 +459,6 @@ document.addEventListener("click", function (e) {
         document.getElementById("suggestionsBox").style.display = "none";
         document.getElementById("dropdownToggle").classList.remove("active");
         isDropdownOpen = false;
-        scholarsDropdown.style.display = "none";
         scholarsDropdown.classList.remove("active");
         navLinks.classList.remove("show");
         menuToggle.classList.remove("active");
