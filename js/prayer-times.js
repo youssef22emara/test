@@ -1,11 +1,55 @@
-// تاريخ بداية رمضان 2025 (28 فبراير 2025)
-const ramadanStart = new Date('2025-02-28T00:00:00');
+const DEFAULT_LOCATION = {
+    latitude: 30.0444,
+    longitude: 31.2357,
+    label: 'القاهرة'
+};
 
-// دالة لجلب مواعيد الصلاة من API
+let activeLocation = DEFAULT_LOCATION;
+
+function getUserLocation() {
+    return new Promise(resolve => {
+        if (!navigator.geolocation) {
+            resolve(DEFAULT_LOCATION);
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                resolve({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    label: 'موقعك الحالي'
+                });
+            },
+            () => resolve(DEFAULT_LOCATION),
+            {
+                enableHighAccuracy: true,
+                timeout: 6000,
+                maximumAge: 10 * 60 * 1000
+            }
+        );
+    });
+}
+
+function updateLocationLabel(meta) {
+    const city = meta?.timezone || activeLocation.label;
+    const readableCity = city.includes('/') ? city.split('/').pop().replace(/_/g, ' ') : city;
+    const title = document.querySelector('.page-hero .prayer-name');
+    const innerTitle = document.querySelector('.prayer-times-header h1');
+    const label = `أوقات الصلاة - ${readableCity}`;
+
+    if (title) title.textContent = label;
+    if (innerTitle) innerTitle.textContent = label;
+}
+
+// دالة لجلب مواعيد الصلاة حسب موقع المستخدم
 async function fetchPrayerTimes() {
+    const url = `https://api.aladhan.com/v1/timings?latitude=${activeLocation.latitude}&longitude=${activeLocation.longitude}&method=5`;
+
     try {
-        const response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5');
+        const response = await fetch(url);
         const data = await response.json();
+        updateLocationLabel(data.data?.meta);
         return data.data.timings;
     } catch (error) {
         console.error('Error fetching prayer times:', error);
@@ -151,8 +195,9 @@ async function fetchAndUpdatePrayerTimes() {
 }
 
 // تحديث مواعيد الصلاة عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', () => {
-    fetchAndUpdatePrayerTimes();
+document.addEventListener('DOMContentLoaded', async () => {
+    activeLocation = await getUserLocation();
+    await fetchAndUpdatePrayerTimes();
     // تحديث العد التنازلي كل ثانية
     setInterval(updateCountdown, 1000);
 });
