@@ -261,6 +261,18 @@
     </div>
   </div>
 
+  <!-- § 7 — PROPHET VIDEOS -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">قصص الأنبياء (فيديو)</div>
+    </div>
+    <div class="scroll-bar-wrap">
+      <button type="button" class="scholar-nav scroll-nav" data-target="videosScroll" data-step="220" aria-label="السابق">▶</button>
+      <div class="videos-scroll" id="videosScroll"></div>
+      <button type="button" class="scholar-nav scroll-nav" data-target="videosScroll" data-step="-220" aria-label="التالي">◀</button>
+    </div>
+  </div>
+
 </main>
 
 <!-- ============ FOOTER ============ -->
@@ -310,6 +322,14 @@
     <span>العيد</span>
   </a>
 </nav>
+
+<!-- ============ VIDEO MODAL ============ -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-inner">
+    <button class="video-modal-close" id="videoClose">✕</button>
+    <iframe class="video-iframe" id="videoIframe" src="" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+  </div>
+</div>
 
 <script src="js/main.js"></script>
 </body>

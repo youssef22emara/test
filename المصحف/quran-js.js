@@ -430,13 +430,16 @@ document.getElementById("quranSearchInput").addEventListener("click", function()
 });
 
 // ===== قائمة الهامبرغر =====
-document.getElementById("menuToggle").addEventListener("click", function() {
-    const navLinks = document.querySelector(".nav-links");
-    const menuToggle = document.getElementById("menuToggle");
+const menuToggleButton = document.getElementById("menuToggle");
+if (menuToggleButton) {
+    menuToggleButton.addEventListener("click", function() {
+        const navLinks = document.querySelector(".nav-links");
+        const menuToggle = document.getElementById("menuToggle");
 
-    navLinks.classList.toggle("show");
-    menuToggle.classList.toggle("active");
-});
+        navLinks?.classList.toggle("show");
+        menuToggle?.classList.toggle("active");
+    });
+}
 
 // إغلاق القائمة عند النقر على رابط
 document.querySelectorAll(".nav-links a").forEach(link => {
@@ -444,8 +447,8 @@ document.querySelectorAll(".nav-links a").forEach(link => {
         const navLinks = document.querySelector(".nav-links");
         const menuToggle = document.getElementById("menuToggle");
 
-        navLinks.classList.remove("show");
-        menuToggle.classList.remove("active");
+        navLinks?.classList.remove("show");
+        menuToggle?.classList.remove("active");
     });
 });
 
@@ -460,7 +463,7 @@ document.addEventListener("click", function (e) {
         document.getElementById("dropdownToggle").classList.remove("active");
         isDropdownOpen = false;
         scholarsDropdown.classList.remove("active");
-        navLinks.classList.remove("show");
-        menuToggle.classList.remove("active");
+        navLinks?.classList.remove("show");
+        menuToggle?.classList.remove("active");
     }
 });

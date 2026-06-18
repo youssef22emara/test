@@ -185,6 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
         repeatBtn.addEventListener('click', function() {
             audioPlayer.loop = !audioPlayer.loop;
             this.classList.toggle('active', audioPlayer.loop);
+            this.setAttribute('aria-pressed', String(audioPlayer.loop));
         });
     }
 

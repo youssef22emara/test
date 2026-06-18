@@ -31,6 +31,39 @@ const SCHOLARS = [
   { name: "سعود الشريم", img: "imges/shuraim.jpeg", url: "scholars/shuraim/shuraim.html" },
 ];
 
+const VIDEOS = [
+  { id: "pB7uZzu2dLI", title: "فيديو 1", channel: "قصص الأنبياء" },
+  { id: "8UTKSiLnL7o", title: "فيديو 2", channel: "قصص الأنبياء" },
+  { id: "MLuVgXMFAJs", title: "فيديو 3", channel: "قصص الأنبياء" },
+  { id: "8fAUzFl5eRI", title: "فيديو 4", channel: "قصص الأنبياء" },
+  { id: "8HOQIKt3uUQ", title: "فيديو 5", channel: "قصص الأنبياء" },
+  { id: "JifgWr2Xo0M", title: "فيديو 6", channel: "قصص الأنبياء" },
+  { id: "RJpQo78JvT8", title: "فيديو 7", channel: "قصص الأنبياء" },
+  { id: "DdPCewixmUk", title: "فيديو 8", channel: "قصص الأنبياء" },
+  { id: "AS0SIybXFGg", title: "فيديو 9", channel: "قصص الأنبياء" },
+  { id: "ZBYdoe5fNa4", title: "فيديو 10", channel: "قصص الأنبياء" },
+  { id: "I1dUAtzk5gM", title: "فيديو 11", channel: "قصص الأنبياء" },
+  { id: "FTPhkGxAA3g", title: "فيديو 12", channel: "قصص الأنبياء" },
+  { id: "LZzTxnKPo5w", title: "فيديو 13", channel: "قصص الأنبياء" },
+  { id: "6AuGZgzuUd0", title: "فيديو 14", channel: "قصص الأنبياء" },
+  { id: "mbmCUY8iaJA", title: "فيديو 15", channel: "قصص الأنبياء" },
+  { id: "N8CUpZr8SHk", title: "فيديو 16", channel: "قصص الأنبياء" },
+  { id: "VQpvw49HG0Q", title: "فيديو 17", channel: "قصص الأنبياء" },
+  { id: "K2KHCxpGJ1s", title: "فيديو 18", channel: "قصص الأنبياء" },
+  { id: "wVd6CdWhwhM", title: "فيديو 19", channel: "قصص الأنبياء" },
+  { id: "k4nk2i6PEQo", title: "فيديو 20", channel: "قصص الأنبياء" },
+  { id: "SmyDB6MxvjM", title: "فيديو 21", channel: "قصص الأنبياء" },
+  { id: "Yfxzxd25s_s", title: "فيديو 22", channel: "قصص الأنبياء" },
+  { id: "iWLabR0VJqE", title: "فيديو 23", channel: "قصص الأنبياء" },
+  { id: "bmIRaxIlGj4", title: "فيديو 24", channel: "قصص الأنبياء" },
+  { id: "PK91XcehU8I", title: "فيديو 25", channel: "قصص الأنبياء" },
+  { id: "-7Dvnyg8q3k", title: "فيديو 26", channel: "قصص الأنبياء" },
+  { id: "QK2gqqETvDw", title: "فيديو 27", channel: "قصص الأنبياء" },
+  { id: "6zifF1cJJkU", title: "فيديو 28", channel: "قصص الأنبياء" },
+  { id: "pekXxazOgsg", title: "فيديو 29", channel: "قصص الأنبياء" },
+  { id: "xrtXvmyHxEA", title: "فيديو 30", channel: "قصص الأنبياء" },
+];
+
 /* ============================================
    PRAYER TIMES
 ============================================ */
@@ -207,6 +240,56 @@ function renderScholars() {
       <img class="scholar-img" src="${s.img}" alt="${s.name}" loading="lazy">
       <div class="scholar-name">${s.name}</div>`;
     grid.appendChild(card);
+  });
+}
+
+/* ============================================
+   VIDEOS RENDER
+============================================ */
+function renderVideos() {
+  const container = document.getElementById('videosScroll');
+  if (!container) return;
+
+  VIDEOS.forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'video-card';
+    card.innerHTML = `
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="${v.title}" loading="lazy">
+        <div class="play-btn"><div class="play-circle">▶</div></div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">${v.title}</div>
+        <div class="video-channel">${v.channel}</div>
+      </div>`;
+    card.addEventListener('click', () => openVideo(v.id));
+    container.appendChild(card);
+  });
+}
+
+/* ============================================
+   VIDEO MODAL
+============================================ */
+function openVideo(id) {
+  document.getElementById('videoIframe').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+  document.getElementById('videoModal').classList.add('open');
+}
+
+function closeVideo() {
+  document.getElementById('videoIframe').src = '';
+  document.getElementById('videoModal').classList.remove('open');
+}
+
+const videoCloseButton = document.getElementById('videoClose');
+const videoModal = document.getElementById('videoModal');
+
+if (videoCloseButton) {
+  videoCloseButton.addEventListener('click', closeVideo);
+}
+
+if (videoModal) {
+  videoModal.addEventListener('click', e => {
+    if (e.target === videoModal) closeVideo();
   });
 }
 
@@ -447,13 +530,40 @@ function initScholarsCarousel() {
   observer.observe(bar);
 }
 
+function initWhatsAppContact() {
+  const phone = '201505990443';
+  const message = encodeURIComponent('السلام عليكم، أريد التواصل بخصوص موقع نور الحياة.');
+  const url = `https://wa.me/${phone}?text=${message}`;
+  const label = 'تواصل واتساب';
+  const icon = '<svg class="whatsapp-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16.03 3.2A12.7 12.7 0 0 0 5.15 22.45L3.7 28.8l6.49-1.52A12.7 12.7 0 1 0 16.03 3.2Zm0 2.35a10.35 10.35 0 0 1 8.7 15.96 10.35 10.35 0 0 1-13.93 3.58l-.43-.25-3.58.84.8-3.5-.28-.45A10.35 10.35 0 0 1 16.03 5.55Zm-4.29 4.98c-.23 0-.6.09-.92.44-.32.35-1.2 1.17-1.2 2.86s1.23 3.32 1.4 3.55c.17.23 2.38 3.8 5.86 5.17 2.9 1.14 3.5.91 4.13.86.63-.06 2.03-.83 2.32-1.63.29-.8.29-1.49.2-1.63-.09-.14-.32-.23-.66-.4-.35-.17-2.03-1-2.35-1.12-.32-.12-.55-.17-.78.17-.23.35-.9 1.12-1.1 1.35-.2.23-.41.26-.75.09-.35-.17-1.45-.53-2.76-1.7-1.02-.91-1.7-2.03-1.9-2.38-.2-.35-.02-.54.15-.71.15-.15.35-.4.52-.6.17-.2.23-.35.35-.58.12-.23.06-.43-.03-.6-.09-.17-.78-1.89-1.07-2.58-.28-.67-.57-.58-.78-.59h-.65Z"/></svg>';
+
+  if (!document.querySelector('.whatsapp-header-btn')) {
+    const headerActions = document.querySelector('.header-actions');
+    if (headerActions) {
+      const headerLink = document.createElement('a');
+      headerLink.className = 'icon-btn whatsapp-header-btn';
+      headerLink.href = url;
+      headerLink.target = '_blank';
+      headerLink.rel = 'noopener';
+      headerLink.title = label;
+      headerLink.setAttribute('aria-label', label);
+      headerLink.innerHTML = icon;
+      headerActions.insertBefore(headerLink, headerActions.firstChild);
+    }
+  }
+
+  document.querySelector('.whatsapp-float')?.remove();
+}
+
 /* ============================================
    INIT
 ============================================ */
 initTheme();
 initAudioPlayerControls();
 renderScholars();
+renderVideos();
 initDua();
 loadPrayerTimes();
 initScholarsCarousel();
 initScrollButtons();
+initWhatsAppContact();

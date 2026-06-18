@@ -167,6 +167,26 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transform: translateY(-1px);
 }
 
+.whatsapp-header-btn {
+  background: #25d366;
+  color: #ffffff;
+  border-color: rgba(37, 211, 102, 0.35);
+}
+
+.whatsapp-header-btn:hover {
+  background: #20bd5a;
+  color: #ffffff;
+  border-color: rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-icon {
+  width: 23px;
+  height: 23px;
+  display: block;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
 /* Search bar */
 .search-overlay {
   position: fixed;

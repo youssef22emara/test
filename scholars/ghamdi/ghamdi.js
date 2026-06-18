@@ -1,4 +1,4 @@
-// روابط السور من موقع MP3Quran.net
+﻿// روابط السور من موقع MP3Quran.net
 const surahLinks = {
     'سورة الفاتحة': 'https://server7.mp3quran.net/download/s_gmd/001.mp3',
     'سورة البقرة': 'https://server7.mp3quran.net/download/s_gmd/002.mp3',
@@ -150,4 +150,79 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-}); 
+});
+// عناصر التحكم في مشغل الصوت
+function initAudioControls() {
+    const audioPlayer = document.getElementById('quran-audio');
+    if (!audioPlayer || audioPlayer.dataset.controlsReady === 'true') return;
+    audioPlayer.dataset.controlsReady = 'true';
+
+    const playBtn = document.getElementById('play-pause');
+    const repeatBtn = document.getElementById('repeat-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const progress = document.getElementById('progress');
+    const currentTimeEl = document.getElementById('current-time');
+    const durationEl = document.getElementById('duration');
+    const disc = document.querySelector('.disc');
+    const discImage = document.querySelector('.disc-image');
+
+    function setPlayIcon(isPlaying) {
+        const icon = playBtn?.querySelector('i');
+        if (!icon) return;
+        icon.classList.toggle('fa-play', !isPlaying);
+        icon.classList.toggle('fa-pause', isPlaying);
+    }
+
+    function setPlayingUi(isPlaying) {
+        setPlayIcon(isPlaying);
+        disc?.classList.toggle('playing', isPlaying);
+        discImage?.classList.toggle('playing', isPlaying);
+    }
+
+    function formatTime(seconds) {
+        if (!Number.isFinite(seconds) || seconds <= 0) return '00:00';
+        const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const rest = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${minutes}:${rest}`;
+    }
+
+    playBtn?.addEventListener('click', () => {
+        if (!audioPlayer.currentSrc && !audioPlayer.src) return;
+        if (audioPlayer.paused) {
+            audioPlayer.play().catch(() => {});
+        } else {
+            audioPlayer.pause();
+        }
+    });
+
+    repeatBtn?.addEventListener('click', function () {
+        audioPlayer.loop = !audioPlayer.loop;
+        this.classList.toggle('active', audioPlayer.loop);
+        this.setAttribute('aria-pressed', String(audioPlayer.loop));
+    });
+
+    audioPlayer.addEventListener('loadedmetadata', () => {
+        if (durationEl) durationEl.textContent = formatTime(audioPlayer.duration || 0);
+        if (downloadBtn) downloadBtn.href = audioPlayer.currentSrc || audioPlayer.src || '#';
+    });
+
+    audioPlayer.addEventListener('timeupdate', () => {
+        if (currentTimeEl) currentTimeEl.textContent = formatTime(audioPlayer.currentTime || 0);
+        if (progress && audioPlayer.duration) {
+            progress.value = ((audioPlayer.currentTime / audioPlayer.duration) * 100) || 0;
+        }
+    });
+
+    progress?.addEventListener('input', () => {
+        if (!audioPlayer.duration) return;
+        audioPlayer.currentTime = (Number(progress.value) / 100) * audioPlayer.duration;
+    });
+
+    audioPlayer.addEventListener('play', () => setPlayingUi(true));
+    audioPlayer.addEventListener('pause', () => setPlayingUi(false));
+    audioPlayer.addEventListener('ended', () => {
+        if (!audioPlayer.loop) setPlayingUi(false);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initAudioControls);
